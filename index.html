@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<svg width="960" height="400"></svg>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+
+<style>
+
+.crew-line{
+  stroke: black;
+  stroke-width: 2px;
+      opacity: 0.25;
+
+}
+
+.lose-line{
+  stroke: black;
+  stroke-width: 2px;
+
+}
+
+
+.win-circle {
+  fill: white;
+  stroke: black;
+
+}
+
+.lose-circle {
+  fill: black;
+  stroke: black;
+}
+
+.crew-labels {
+    font-size: 12px;
+}
+
+.end-line{
+  stroke: grey;
+  stroke-dasharray: 1,1;
+}
+
+
+.difference-line{
+  stroke: grey;
+  stroke-dasharray: 1,1;
+}
+
+
+</style>
+
+<script>
+
+// TODO:
+// x-scale
+// title
+// country flag
+
+var svg = d3.select("svg"),
+    margin = {top: 20, right: 20, bottom: 30, left: 50, label: 200},
+    width = +svg.attr("width") - margin.left - margin.right - margin.label,
+    height = +svg.attr("height") - margin.top - margin.bottom,
+    g = svg.append("g").attr("transform", "translate(" + (margin.left + margin.label) + "," + margin.top + ")");
+
+
+var label_g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+
+
+
+
+d3.json("results.json", function(results) {
+
+
+  var numCrews = results.crews.length;
+  var maxMargin = results.crews[numCrews-1].margin;
+
+  var xScale = d3.scale.linear().domain([0, maxMargin]).range([width, 0]);
+  var yScale = d3.scale.linear().domain([0, numCrews]).range([0, height]);
+
+  g.selectAll(".crew-line")
+    .data(results.crews)
+    .enter()
+    .append("line")
+    .attr("x1", xScale(maxMargin))
+    .attr("x2", function(d){ return xScale(d.margin); })
+    .attr("y1", function(d){ return yScale(d.id) })
+    .attr("y2", function(d){ return yScale(d.id) })
+    .attr("class", "crew-line");
+
+
+var labels = label_g.selectAll("text")
+          .data(results.crews)
+          .enter()
+          .append("text")
+          .text(function(d){ return d.crew; })
+          .attr("y", function(d){ return yScale(d.id) })
+          .attr("class", "crew-labels")
+
+          .attr("dy", 0)
+          .call(wrap, margin.label);
+
+var losing_lines = 
+  g.selectAll(".lose_line")
+    .data(results.races)
+    .enter()
+    .append("line")
+    .attr("x1", function(d){
+      var loser = results.crews.filter(function(c){ return c.crew == d.loser })[0]; 
+      return xScale(loser.margin);
+    })
+    .attr("x2", function(d){ 
+            var winner = results.crews.filter(function(c){ return c.crew == d.winner })[0];
+      return xScale(winner.margin); 
+    })
+    .attr("y1", function(d){ 
+      var loser = results.crews.filter(function(c){ return c.crew == d.loser })[0]; 
+      return yScale(loser.id) ;
+    })
+    .attr("y2", function(d){ 
+      var loser = results.crews.filter(function(c){ return c.crew == d.loser })[0]; 
+      return yScale(loser.id); 
+    })
+    .attr("class", "lose-line")
+    .on("mouseover", function(d){ highlightRace(d) })
+    .on("mouseout", clearHighLights);
+
+var overall_winner_circle = 
+g.append("circle")
+    .attr("cx", xScale(0))
+    .attr("cy", yScale(results.crews[0].id))
+    .attr("r", 5)
+
+
+var winning_circles = 
+g.selectAll(".win-circle")
+    .data(results.races)
+    .enter()
+    .append("circle")
+    .attr("cx", function(d){ 
+      var winner = results.crews.filter(function(c){ return c.crew == d.winner })[0];
+      return xScale(winner.margin + d.margin);
+       })
+    .attr("cy", function(d){ 
+      var winner = results.crews.filter(function(c){ return c.crew == d.winner })[0];
+      return yScale(winner.id);
+       })
+    .attr("r", 5)
+    .attr("class", "win-circle")
+    .on("mouseover", function(d){ highlightRace(d) })
+    .on("mouseout", clearHighLights);
+
+winning_circles.append("title").text(function(d){ return d.winner + " beat " + d.loser + " by "+ d.margin})
+
+
+
+var losing_circles = 
+g.selectAll(".lose-circle")
+    .data(results.races)
+    .enter()
+    .append("circle")
+    .attr("cx", function(d){ 
+      var winner = results.crews.filter(function(c){ return c.crew == d.winner })[0];
+      return xScale(winner.margin + d.margin);
+       })
+    .attr("cy", function(d){ 
+      var loser = results.crews.filter(function(c){ return c.crew == d.loser })[0];
+      return yScale(loser.id);
+       })
+    .attr("r", 5)
+    .attr("class", "lose-circle")
+    .on("mouseover", function(d){ highlightRace(d) })
+    .on("mouseout", clearHighLights);
+
+
+    g.append("line")
+    .attr("x1", width)
+    .attr("x2", width)
+    .attr("y1", 0)
+    .attr("y2", height)
+    .attr("class", "end-line");
+
+  var difference_line = g.append("line").attr("class", "difference-line");
+
+
+    function clearHighLights(){
+        highlightRace({});
+        difference_line.style("visibility", "hidden");
+    }
+    function highlightRace(race_data){
+
+        var yellow = "#ffc200";
+        winning_circles.style("stroke", function(d){ return d==race_data ? yellow : "black" });
+        losing_circles.style("stroke", function(d){ return d==race_data ? yellow : "black" });
+        losing_lines.style("stroke", function(d){ return d==race_data ? yellow : "black" });
+
+        labels.attr("fill", function(d){ return (d.crew == race_data.winner || d.crew  == race_data.loser) ? yellow : "black" });
+
+        if (race_data.winner){
+          var winner = results.crews.filter(function(c){ return c.crew == race_data.winner })[0];
+          var loser = results.crews.filter(function(c){ return c.crew == race_data.loser })[0]; 
+
+          difference_line
+              .attr("x1", xScale(winner.margin + race_data.margin) )
+              .attr("x2", xScale(winner.margin + race_data.margin) )
+              .attr("y1", yScale(loser.id))
+              .attr("y2", yScale(winner.id))
+              .style("visibility", null);
+        }
+            
+    }
+
+
+});
+
+
+// See this block: https://bl.ocks.org/mbostock/7555321
+function wrap(text, width) {
+  text.each(function() {
+    var text = d3.select(this),
+        words = text.text().split(/\s+/).reverse(),
+        word,
+        line = [],
+        lineNumber = 0,
+        lineHeight = 1.1, // ems
+        y = text.attr("y"),
+        dy = parseFloat(text.attr("dy")),
+        tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+    while (word = words.pop()) {
+      line.push(word);
+      tspan.text(line.join(" "));
+      if (tspan.node().getComputedTextLength() > width) {
+        line.pop();
+        tspan.text(line.join(" "));
+        line = [word];
+        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+      }
+    }
+  });
+}
+
+
+</script>
