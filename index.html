@@ -70,8 +70,53 @@ d3.json("all_results.json", function(results){
 });
 
 
-});
+function drawYear(year){
+  d3.select("#diagram-div").node().innerHTML = "";
 
+  var subResults = allResults.filter(function(d){ return d.year == year });
+  subResults.map(function(d){ drawResults(d.results, d.event_name)});
+}
+
+function getCountryFlagName(teamName){
+  var countries = ["Ireland", "Holland", "Germany", "USA", "Portugal", "Greece", "China", "Switzerland", "Australia", "New Zealand", "Argentina", "Norway", "Estonia", "Bulgaria", "Russia", "Poland", "South Africa", "Japan", "Belarus", "Slovenia", "Canada", "Czech Republic", "Azerbaijan", "Belgium", "Italy", "Spain", "Denmark"];
+
+  for (var i=0; i<countries.length; i++){
+    // If multiple maches, should inidcate
+    if (teamName.indexOf(countries[i]) != -1){
+      return countries[i];
+    }
+  }
+
+
+var codes = [
+{code: "GER", name: "Germany"},
+{code: "CHN", name: "China"},
+{code: "NED", name: "Holland"},
+{code: "AUS", name: "Australia"},
+{code: "NZL", name: "New Zealand"},
+{code: "CAN", name: "Canada"},
+{code: "JPN", name: "Japan"},
+{code: "U.S.A.", name: "USA"},
+
+{code: "NOR", name: "Norway"},
+{code: "FRA", name: "France"},
+{code: "IRL", name: "Ireland"}
+
+];
+
+for (var i=0; i<codes.length; i++){
+    // If multiple maches, should inidcate
+    if (teamName.indexOf(codes[i].code) != -1){
+      return codes[i].name;
+    }
+  }
+
+
+
+
+
+
+}
 
 function drawResults(results, title){
 
@@ -138,7 +183,7 @@ flag_g.selectAll("image")
           .attr("x", 0) 
           .attr("width", 20)
           .attr("height", 20)
-          .attr("xlink:href", function(d){ return "flags/" + d.country + ".svg"});
+          .attr("xlink:href", function(d){ return "flags/" + getCountryFlagName(d.crew) + ".svg"});
 
 
 var losing_lines = 
