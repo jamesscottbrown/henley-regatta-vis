@@ -332,6 +332,26 @@ function wrap(text, width) {
 
 </script>
 
+<h1> Henley Royal Regatta results</h1>
+
+<div id="intro">
+<p>
+Each event in Henley Royal Regatta is a knock-out regatta race: pairs of crews race side-by-side down the River Thames, and when a crew loses it is eliminated.
+Because wind and tide conditions vary, the times achieved by crews racing at different times cannot be directly compared.
+</p>
+
+<p>
+These visualisations represent each crew by a solid line segment (indicating by how much they lost the race that knocked them out), and a circle (whose position is the sum of the margins by which they were knocked out, and margin by which the crew that knocked them out were themselves knocked out, and so on).
+</p>
+
+<p>
+The black circle indicates roughly how fast each crew is: the further to the right, the faster. The number of ticks indicates how many races it won before being knocked out, and the distance between the circle and the ticks indicates y how much it won each of these races.
+</p>
+</div>
+
+<div>
+
+Select Year 
 <select id = "year-select" onchange="drawYear(this.value);">
 <option selected>2017</option>
 <option>2016</option>
