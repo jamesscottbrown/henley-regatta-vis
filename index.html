@@ -18,9 +18,9 @@
 }
 
 
-.win-circle {
-  fill: white;
+.win-tick {
   stroke: black;
+  stroke-width: 3px;
 
 }
 
@@ -132,20 +132,28 @@ g.append("circle")
 
 
 var winning_circles = 
-g.selectAll(".win-circle")
+g.selectAll(".win-tick")
     .data(results.races)
     .enter()
-    .append("circle")
-    .attr("cx", function(d){ 
+    .append("line")
+    .attr("x1", function(d){ 
       var winner = results.crews.filter(function(c){ return c.crew == d.winner })[0];
       return xScale(winner.margin + d.margin);
        })
-    .attr("cy", function(d){ 
+    .attr("x2", function(d){ 
       var winner = results.crews.filter(function(c){ return c.crew == d.winner })[0];
-      return yScale(winner.id);
+      return xScale(winner.margin + d.margin);
+       })
+    .attr("y1", function(d){ 
+      var winner = results.crews.filter(function(c){ return c.crew == d.winner })[0];
+      return yScale(winner.id) + 5;
+       })
+    .attr("y2", function(d){ 
+      var winner = results.crews.filter(function(c){ return c.crew == d.winner })[0];
+      return yScale(winner.id) - 5;
        })
     .attr("r", 5)
-    .attr("class", "win-circle")
+    .attr("class", "win-tick")
     .on("mouseover", function(d){ highlightRace(d) })
     .on("mouseout", clearHighLights);
 
