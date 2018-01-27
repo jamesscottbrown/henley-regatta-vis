@@ -62,6 +62,7 @@ var svg = d3.select("svg"),
 
 
 var label_g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+var flag_g = svg.append("g").attr("transform", "translate(" + (margin.left -30) + "," + margin.top + ")");
 
 
 
@@ -98,6 +99,18 @@ var labels = label_g.selectAll("text")
 
           .attr("dy", 0)
           .call(wrap, margin.label);
+
+
+flag_g.selectAll("image")
+          .data(results.crews)
+          .enter()
+          .append("image")
+          .attr("y", function(d){ return yScale(d.id) - 12 })// since  text-size is 12px
+          .attr("x", 0) 
+          .attr("width", 20)
+          .attr("height", 20)
+          .attr("xlink:href", function(d){ return "flags/" + d.country + ".svg"});
+
 
 var losing_lines = 
   g.selectAll(".lose_line")
