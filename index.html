@@ -101,7 +101,17 @@ function drawResults(results, title){
     .data(results.crews)
     .enter()
     .append("line")
-    .attr("x1", xScale(maxMargin))
+    .attr("x1", function(d){
+      //return xScale(maxMargin);
+
+      var crewsMaxMargin = 0;
+      for (var i=0; i<results.races.length; i++){
+          if (results.races[i].winner == d.crew){
+            crewsMaxMargin = Math.max(crewsMaxMargin, results.races[i].margin);
+          }
+      }
+      return xScale(crewsMaxMargin + d.margin);
+    })
     .attr("x2", function(d){ return xScale(d.margin); })
     .attr("y1", function(d){ return yScale(d.id) })
     .attr("y2", function(d){ return yScale(d.id) })
