@@ -210,11 +210,6 @@ var losing_lines =
     .on("mouseover", function(d){ highlightRace(d) })
     .on("mouseout", clearHighLights);
 
-var overall_winner_circle = 
-g.append("circle")
-    .attr("cx", xScale(0))
-    .attr("cy", yScale(results.crews[0].id))
-    .attr("r", circle_radius)
 
 
 var winning_circles = 
