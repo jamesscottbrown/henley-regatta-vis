@@ -78,9 +78,9 @@ function drawResults(results, title){
     d3.select("#diagram-div").append("h2").text(title)
   }
 
-  var svg = d3.select("#diagram-div").append("svg").attr("width", 500).attr("height", 20 + 20 + results.crews.length*30);
+  var svg = d3.select("#diagram-div").append("svg").attr("width", 600).attr("height", 20 + 20 + results.crews.length*30);
 
-  var  margin = {top: 20, right: 20, bottom: 30, left: 50, label: 200},
+  var  margin = {top: 20, right: 20, bottom: 30, left: 50, label: 300},
       width = +svg.attr("width") - margin.left - margin.right - margin.label,
       height = +svg.attr("height") - margin.top - margin.bottom,
       g = svg.append("g").attr("transform", "translate(" + (margin.left + margin.label) + "," + margin.top + ")");
