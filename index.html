@@ -102,7 +102,6 @@ function drawResults(results, title){
     .enter()
     .append("line")
     .attr("x1", function(d){
-      //return xScale(maxMargin);
 
       var crewsMaxMargin = 0;
       for (var i=0; i<results.races.length; i++){
@@ -228,12 +227,14 @@ g.selectAll(".lose-circle")
     .attr("y2", height)
     .attr("class", "end-line");
 
-  var difference_line = g.append("line").attr("class", "difference-line");
+  var difference_line1 = g.append("line").attr("class", "difference-line");
+  var difference_line2 = g.append("line").attr("class", "difference-line");
 
 
     function clearHighLights(){
         highlightRace({});
-        difference_line.style("visibility", "hidden");
+        difference_line1.style("visibility", "hidden");
+        difference_line2.style("visibility", "hidden");
     }
     function highlightRace(race_data){
 
@@ -248,9 +249,16 @@ g.selectAll(".lose-circle")
           var winner = results.crews.filter(function(c){ return c.crew == race_data.winner })[0];
           var loser = results.crews.filter(function(c){ return c.crew == race_data.loser })[0]; 
 
-          difference_line
+          difference_line1
               .attr("x1", xScale(winner.margin + race_data.margin) )
               .attr("x2", xScale(winner.margin + race_data.margin) )
+              .attr("y1", yScale(loser.id))
+              .attr("y2", yScale(winner.id))
+              .style("visibility", null);
+
+          difference_line2
+              .attr("x1", xScale(winner.margin) )
+              .attr("x2", xScale(winner.margin) )
               .attr("y1", yScale(loser.id))
               .attr("y2", yScale(winner.id))
               .style("visibility", null);
