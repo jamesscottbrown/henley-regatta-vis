@@ -85,6 +85,7 @@ function drawResults(results, title){
       height = +svg.attr("height") - margin.top - margin.bottom,
       g = svg.append("g").attr("transform", "translate(" + (margin.left + margin.label) + "," + margin.top + ")");
 
+  var tick_radius = 5, circle_radius = 4;
 
   var label_g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   var flag_g = svg.append("g").attr("transform", "translate(" + (margin.left -30) + "," + margin.top + ")");
@@ -159,7 +160,7 @@ var overall_winner_circle =
 g.append("circle")
     .attr("cx", xScale(0))
     .attr("cy", yScale(results.crews[0].id))
-    .attr("r", 5)
+    .attr("r", circle_radius)
 
 
 var winning_circles = 
@@ -177,13 +178,12 @@ g.selectAll(".win-tick")
        })
     .attr("y1", function(d){ 
       var winner = results.crews.filter(function(c){ return c.crew == d.winner })[0];
-      return yScale(winner.id) + 5;
+      return yScale(winner.id) + tick_radius;
        })
     .attr("y2", function(d){ 
       var winner = results.crews.filter(function(c){ return c.crew == d.winner })[0];
-      return yScale(winner.id) - 5;
+      return yScale(winner.id) - tick_radius;
        })
-    .attr("r", 5)
     .attr("class", "win-tick")
     .on("mouseover", function(d){ highlightRace(d) })
     .on("mouseout", clearHighLights);
@@ -205,7 +205,7 @@ g.selectAll(".lose-circle")
       var loser = results.crews.filter(function(c){ return c.crew == d.loser })[0];
       return yScale(loser.id);
        })
-    .attr("r", 5)
+    .attr("r", circle_radius)
     .attr("class", "lose-circle")
     .on("mouseover", function(d){ highlightRace(d) })
     .on("mouseout", clearHighLights);
