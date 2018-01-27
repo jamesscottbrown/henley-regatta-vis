@@ -205,12 +205,16 @@ var margin_labels = margin_label_g.selectAll(".margin_labels")
           .text(function(d){ 
                 var race = results.races.filter(function(r){ return r.loser == d.crew })[0]; 
                 return race ? race.margin_string : "";
-
             })
           .attr("y", function(d){ return yScale(d.id) })
           .attr("class", "crew-labels")
           .attr("dy", 0)
-          .call(wrap, margin.margin_label);
+          .call(wrap, margin.margin_label)
+          .on("mouseover", function(d){ 
+            var race = results.races.filter(function(r){ return r.loser == d.crew })[0];
+            highlightRace(race);
+          })
+          .on("mouseout", clearHighLights);
 
 
 
@@ -315,6 +319,7 @@ g.selectAll(".lose-circle")
         winning_circles.style("stroke", function(d){ return d==race_data ? yellow : "black" });
         losing_circles.style("stroke", function(d){ return d==race_data ? yellow : "black" });
         losing_lines.style("stroke", function(d){ return d==race_data ? yellow : "black" });
+        margin_labels.style("fill", function(d){ return d.crew==race_data.loser ? yellow : "black" });
 
         labels.attr("fill", function(d){ return (d.crew == race_data.winner || d.crew  == race_data.loser) ? yellow : "black" });
 
