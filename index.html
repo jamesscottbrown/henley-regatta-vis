@@ -71,10 +71,21 @@ d3.json("all_results.json", function(results){
 
 function drawYear(year){
   d3.select("#diagram-div").node().innerHTML = "";
+  d3.select("#event-select").node().value = "Any";
 
   var subResults = allResults.filter(function(d){ return d.year == year });
-  subResults.map(function(d){ drawResults(d.results, d.event_name)});
+  subResults.map(function(d){ drawResults(d.results, d.event_name + " (" + d.year + ")")});
 }
+
+function drawEvent(event_name){
+  d3.select("#diagram-div").node().innerHTML = "";
+  d3.select("#year-select").node().value = "Any";
+
+  event_name = "The " + event_name;
+  var subResults = allResults.filter(function(d){ return d.event_name == event_name });
+  subResults.map(function(d){ drawResults(d.results, d.event_name + " (" + d.year + ")")});
+}
+
 
 function getCountryFlagName(teamName){
   var countries = ["Ireland", "Holland", "Germany", "USA", "Portugal", "Greece", "China", "Switzerland", "Australia", "New Zealand", "Argentina", "Norway", "Estonia", "Bulgaria", "Russia", "Poland", "South Africa", "Japan", "Belarus", "Slovenia", "Canada", "Czech Republic", "Azerbaijan", "Belgium", "Italy", "Spain", "Denmark", "France", "Ukraine"];
@@ -374,5 +385,40 @@ Select Year
 <option>1999</option>
 <option>Any</option>
 </select>
+
+or Event
+<select id = "event-select" onchange="drawEvent(this.value);">
+<option selected>Any</option>
+<option>Thames Challenge Cup</option>
+<option>Visitors' Challenge Cup</option>
+<option>Prince Albert Challenge Cup</option>
+<option>Fawley Challenge Cup</option>
+<option>Women's Fours</option>
+<option>Stewards' Challenge Cup</option>
+<option>Grand Challenge Cup</option>
+<option>Wyfold Challenge Cup</option>
+<option>Queen Mother Challenge Cup</option>
+<option>Ladies' Challenge Plate</option>
+<option>Remenham Challenge Cup</option>
+<option>Princess Elizabeth Challenge Cup</option>
+<option>Women's Quadruple Sculls</option>
+<option>Silver Goblets & Nickalls' Challenge Cup</option>
+<option>Diamond Jubilee Challenge Cup</option>
+<option>Temple Challenge Cup</option>
+<option>Prince Philip Challenge Cup</option>
+<option>Women's Pairs</option>
+<option>Henley Prize</option>
+<option>Men's Quadruple Sculls</option>
+<option>Double Sculls Challenge Cup</option>
+<option>Women's Invitation Eights</option>
+<option>Diamond Challenge Sculls</option>
+<option>Prince of Wales Challenge Cup</option>
+<option>Princess Royal Challenge Cup</option>
+<option>Women's Double Sculls</option>
+<option>Princess Grace Challenge Cup</option>
+<option>Men's Student Coxed Fours</option>
+<option>Britannia Challenge Cup</option>
+</select>
+</div>
 
 <div id="diagram-div"></div>
