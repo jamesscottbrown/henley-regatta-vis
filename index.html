@@ -20,7 +20,7 @@
 
 .win-tick {
   stroke: black;
-  stroke-width: 3px;
+  stroke-width: 2px;
 
 }
 
@@ -54,22 +54,40 @@
 // title
 // country flag
 
-var svg = d3.select("svg"),
-    margin = {top: 20, right: 20, bottom: 30, left: 50, label: 200},
-    width = +svg.attr("width") - margin.left - margin.right - margin.label,
-    height = +svg.attr("height") - margin.top - margin.bottom,
-    g = svg.append("g").attr("transform", "translate(" + (margin.left + margin.label) + "," + margin.top + ")");
-
-
-var label_g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-var flag_g = svg.append("g").attr("transform", "translate(" + (margin.left -30) + "," + margin.top + ")");
 
 
 
 
 
+//d3.json("results.json", function(results) {
+//drawResults(results);
+//});
 
-d3.json("results.json", function(results) {
+d3.json("all_results.json", function(results) {
+
+  results.filter(function (d){ return d.year == "2017" }).map(
+    function(d){ drawResults(d.results, d.event_name)}
+    );
+
+});
+
+
+function drawResults(results, title){
+
+  if (title){
+    d3.select("#diagram-div").append("h2").text(title)
+  }
+
+  var svg = d3.select("#diagram-div").append("svg").attr("width", 500).attr("height", 20 + 20 + results.crews.length*30);
+
+  var  margin = {top: 20, right: 20, bottom: 30, left: 50, label: 200},
+      width = +svg.attr("width") - margin.left - margin.right - margin.label,
+      height = +svg.attr("height") - margin.top - margin.bottom,
+      g = svg.append("g").attr("transform", "translate(" + (margin.left + margin.label) + "," + margin.top + ")");
+
+
+  var label_g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  var flag_g = svg.append("g").attr("transform", "translate(" + (margin.left -30) + "," + margin.top + ")");
 
 
   var numCrews = results.crews.length;
@@ -232,8 +250,7 @@ g.selectAll(".lose-circle")
 
 losing_circles.append("title").text(function(d){ return d.winner + " beat " + d.loser + " by "+ d.margin_string})
 
-
-});
+}
 
 
 // See this block: https://bl.ocks.org/mbostock/7555321
@@ -263,3 +280,5 @@ function wrap(text, width) {
 
 
 </script>
+
+<div id="diagram-div"></div>
