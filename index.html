@@ -266,13 +266,6 @@ g.selectAll(".lose-circle")
     .on("mouseout", clearHighLights);
 
 
-    g.append("line")
-    .attr("x1", width)
-    .attr("x2", width)
-    .attr("y1", 0)
-    .attr("y2", height)
-    .attr("class", "end-line");
-
   var difference_line1 = g.append("line").attr("class", "difference-line");
   var difference_line2 = g.append("line").attr("class", "difference-line");
 
