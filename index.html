@@ -170,7 +170,7 @@ g.selectAll(".win-tick")
     .on("mouseover", function(d){ highlightRace(d) })
     .on("mouseout", clearHighLights);
 
-winning_circles.append("title").text(function(d){ return d.winner + " beat " + d.loser + " by "+ d.margin})
+winning_circles.append("title").text(function(d){ return d.winner + " beat " + d.loser + " by "+ d.margin_string})
 
 
 
@@ -229,6 +229,8 @@ g.selectAll(".lose-circle")
         }
             
     }
+
+losing_circles.append("title").text(function(d){ return d.winner + " beat " + d.loser + " by "+ d.margin_string})
 
 
 });
