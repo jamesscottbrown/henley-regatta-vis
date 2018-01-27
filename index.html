@@ -43,6 +43,11 @@
   stroke-dasharray: 1,1;
 }
 
+.margin-header{
+  font-size: 12px;
+  font-weight: bold;
+}
+
 
 </style>
 
@@ -134,16 +139,18 @@ function drawResults(results, title){
     d3.select("#diagram-div").append("h2").text(title)
   }
 
-  var svg = d3.select("#diagram-div").append("svg").attr("width", 600).attr("height", 20 + 20 + results.crews.length*30);
+  var svg = d3.select("#diagram-div").append("svg").attr("width", 700).attr("height", 20 + 20 + results.crews.length*30);
 
-  var  margin = {top: 20, right: 20, bottom: 30, left: 50, label: 300},
-      width = +svg.attr("width") - margin.left - margin.right - margin.label,
+  var  margin = {top: 20, right: 20, bottom: 30, left: 50, label: 300, margin_label: 100},
+      width = +svg.attr("width") - margin.left - margin.right - margin.label - margin.margin_label,
       height = +svg.attr("height") - margin.top - margin.bottom,
       g = svg.append("g").attr("transform", "translate(" + (margin.left + margin.label) + "," + margin.top + ")");
 
   var tick_radius = 5, circle_radius = 4;
 
   var label_g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  var margin_label_g = svg.append("g").attr("transform", "translate(" + (10 + +svg.attr("width") - margin.right - margin.margin_label) + "," + margin.top + ")");
+
   var flag_g = svg.append("g").attr("transform", "translate(" + (margin.left -30) + "," + margin.top + ")");
 
 
@@ -180,9 +187,31 @@ var labels = label_g.selectAll("text")
           .text(function(d){ return d.crew; })
           .attr("y", function(d){ return yScale(d.id) })
           .attr("class", "crew-labels")
-
           .attr("dy", 0)
           .call(wrap, margin.label);
+
+
+
+margin_label_g.append("text")
+          .attr("y", - 12)
+          .attr("class", "margin-header")
+          .attr("dy", 0)
+          .text("Losing margin");
+
+var margin_labels = margin_label_g.selectAll(".margin_labels")
+          .data(results.crews)
+          .enter()
+          .append("text")
+          .text(function(d){ 
+                var race = results.races.filter(function(r){ return r.loser == d.crew })[0]; 
+                return race ? race.margin_string : "";
+
+            })
+          .attr("y", function(d){ return yScale(d.id) })
+          .attr("class", "crew-labels")
+          .attr("dy", 0)
+          .call(wrap, margin.margin_label);
+
 
 
 flag_g.selectAll("image")
