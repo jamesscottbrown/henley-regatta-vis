@@ -79,7 +79,7 @@ function drawYear(year){
   d3.select("#event-select").node().value = "Any";
 
   var subResults = allResults.filter(function(d){ return d.year == year });
-  subResults.map(function(d){ drawResults(d.results, d.event_name + " (" + d.year + ")")});
+  subResults.map(function(d){ drawResults(d)});
 }
 
 function drawEvent(event_name){
@@ -88,7 +88,7 @@ function drawEvent(event_name){
 
   event_name = "The " + event_name;
   var subResults = allResults.filter(function(d){ return d.event_name == event_name });
-  subResults.map(function(d){ drawResults(d.results, d.event_name + " (" + d.year + ")")});
+  subResults.map(function(d){ drawResults(d)});
 }
 
 
@@ -133,11 +133,23 @@ for (var i=0; i<codes.length; i++){
 
 }
 
-function drawResults(results, title){
+function drawResults(eventDetails){
 
-  if (title){
-    d3.select("#diagram-div").append("h2").text(title)
-  }
+  var results = eventDetails.results;
+
+  d3.select("#diagram-div")
+  .append("h2")
+  .text(eventDetails.event_name + " (" + eventDetails.year + ") ")
+  .style("margin-bottom", "0px")
+
+  d3.select("#diagram-div")
+  .append("p")
+  .style("margin-top", "0px")
+  .append("small")
+  .append("a")
+  .attr("href", "https://www.hrr.co.uk/henley-results/search/" + eventDetails.year + "/" + eventDetails.event_id + "/0")
+  .text("Official results")
+  
 
   var svg = d3.select("#diagram-div").append("svg").attr("width", 700).attr("height", 20 + 20 + results.crews.length*30);
 
