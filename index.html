@@ -267,6 +267,12 @@ var losing_lines =
     .on("mouseout", clearHighLights);
 
 
+losing_lines.style("stroke-dasharray", function(d){ 
+  var wonEasily = (d.margin_string.toLowerCase().indexOf("easily")  != -1);
+  return wonEasily ? "2,2" : "";
+})
+
+
 
 var winning_circles = 
 g.selectAll(".win-tick")
