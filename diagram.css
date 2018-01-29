@@ -1,0 +1,43 @@
+.crew-line{
+  stroke: black;
+  stroke-width: 2px;
+      opacity: 0.25;
+
+}
+
+.lose-line{
+  stroke: black;
+  stroke-width: 2px;
+
+}
+
+.win-tick {
+  stroke: black;
+  stroke-width: 2px;
+
+}
+
+.lose-circle {
+  fill: black;
+  stroke: black;
+}
+
+.crew-labels {
+    font-size: 12px;
+}
+
+.end-line{
+  stroke: grey;
+  stroke-dasharray: 1,1;
+}
+
+
+.difference-line{
+  stroke: grey;
+  stroke-dasharray: 1,1;
+}
+
+.margin-header{
+  font-size: 12px;
+  font-weight: bold;
+}

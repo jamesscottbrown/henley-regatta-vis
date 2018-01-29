@@ -1,0 +1,52 @@
+h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+}
+
+.h1, .h2, .j3, h1, h2, h3 {
+margin-top: 20px;
+margin-bottom: 10px
+}
+
+
+.h2, h2 {
+font-size: 30px;  
+}
+
+h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, 
+.h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small, 
+h1 .small, h2 .small, h3 .small, h4 .small, h5 .small, h6 .small, 
+.h1 .small, .h2 .small, .h3 .small, .h4 .small, .h5 .small, .h6 .small {
+font-weight: normal;
+line-height: 1;
+color: #777;
+}
+
+
+body {
+font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.42857143;
+color: #333;
+background-color: #fff
+}
+
+.page-header {
+padding-bottom: 9px;
+margin: 40px 0 20px;
+border-bottom: 1px solid #eee
+}
+
+.small {
+font-weight: 400;
+line-height: 1;
+color: #777
+}
+
+small {
+font-size: 65%;
+}
+ 
