@@ -275,7 +275,7 @@ g.selectAll(".lose-circle")
         losing_lines.style("stroke", function(d){ return d==race_data ? yellow : "black" });
 
         margin_labels.style("font-weight", function(d){ return d.crew==race_data.loser ? "bold" : "normal"});
-        labels.attr("font-weight", function(d){ return (d.crew == race_data.winner || d.crew  == race_data.loser) ? "bold" : "normal" });
+        labels.style("font-weight", function(d){ return (d.crew == race_data.winner || d.crew  == race_data.loser) ? "bold" : "normal" });
 
         if (race_data.winner){
           var winner = results.crews.filter(function(c){ return c.crew == race_data.winner })[0];
