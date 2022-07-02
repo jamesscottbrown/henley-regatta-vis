@@ -64,6 +64,11 @@ for (var i=0; i<codes.length; i++){
 
 }
 
+function slugify(name) {
+    return name.replaceAll(" ", "-").replaceAll("'", "").toLowerCase();
+}
+
+
 function drawResults(eventDetails){
 
   var results = eventDetails.results;
@@ -78,7 +83,7 @@ function drawResults(eventDetails){
   .style("margin-top", "0px")
   .append("small")
   .append("a")
-  .attr("href", "https://www.hrr.co.uk/henley-results/search/" + eventDetails.year + "/" + eventDetails.event_id + "/0")
+  .attr("href", `https://www.hrr.co.uk/results/?race-year=${eventDetails.year}&result-page=1&trophy=${slugify(eventDetails.event_name)}`)
   .text("Official results")
   
 
