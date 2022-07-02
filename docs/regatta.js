@@ -137,8 +137,36 @@ var labels = label_g.selectAll("text")
           .attr("y", function(d){ return yScale(d.id) })
           .attr("class", "crew-labels")
           .attr("dy", 0)
-          .call(wrap, margin.label);
+          .call(wrap, margin.label)
 
+          .on("mouseover", function(d){
+            highlightCrew(d);
+          })
+          .on("mouseout", clearHighLights);
+
+
+function highlightCrew(crew){
+    const crewName = crew.crew;
+
+    const lostTo = results.races.filter(r => r.loser == crewName).map(r => r.winner);
+    const wonAgainst = results.races.filter(r => r.winner == crewName).map(r => r.loser);
+
+    var yellow = "#ffc200";
+
+    winning_circles.style("stroke", function(d){ return d.loser == crewName ? yellow : "black" }); //actually lines, indicaing wins by this cre
+    losing_circles.style("fill", function(d){ return (d.loser == crewName || d.winner == crewName || lostTo.includes(d.loser))  ? yellow : "black" });
+    losing_lines.style("stroke", function(d){ return (d.loser == crewName || d.winner == crewName) ? yellow : "black" });
+
+    labels.style("font-weight", function(d){ return (lostTo.includes(d.crew) || wonAgainst.includes(d.crew) || crewName === d.crew) ? "bold" : "normal" });
+    margin_labels.style("font-weight", function(d){ return (lostTo.includes(d.crew) || wonAgainst.includes(d.crew) || crewName === d.crew) ? "bold" : "normal" });
+
+    difference_line1
+        .attr("x1", xScale(crew.margin) )
+        .attr("x2", xScale(crew.margin) )
+        .attr("y1", yScale.range()[0])
+        .attr("y2", yScale.range()[1])
+        .style("visibility", "visible");
+}
 
 
 margin_label_g.append("text")
