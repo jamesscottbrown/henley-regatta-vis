@@ -271,7 +271,7 @@ g.selectAll(".lose-circle")
 
         var yellow = "#ffc200";
         winning_circles.style("stroke", function(d){ return d==race_data ? yellow : "black" });
-        losing_circles.style("stroke", function(d){ return d==race_data ? yellow : "black" });
+        losing_circles.style("fill", function(d){ return d==race_data ? yellow : "black" });
         losing_lines.style("stroke", function(d){ return d==race_data ? yellow : "black" });
 
         margin_labels.style("font-weight", function(d){ return d.crew==race_data.loser ? "bold" : "normal"});
