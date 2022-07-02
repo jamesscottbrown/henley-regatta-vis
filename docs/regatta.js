@@ -1,7 +1,8 @@
 var allResults;
 d3.json("all_results.json", function(results){
   allResults = results;
-  drawYear("2017");
+  const year = document.getElementById("year-select").value;
+  drawYear(year);
 });
 
 
