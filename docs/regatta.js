@@ -273,9 +273,9 @@ g.selectAll(".lose-circle")
         winning_circles.style("stroke", function(d){ return d==race_data ? yellow : "black" });
         losing_circles.style("stroke", function(d){ return d==race_data ? yellow : "black" });
         losing_lines.style("stroke", function(d){ return d==race_data ? yellow : "black" });
-        margin_labels.style("fill", function(d){ return d.crew==race_data.loser ? yellow : "black" });
 
-        labels.attr("fill", function(d){ return (d.crew == race_data.winner || d.crew  == race_data.loser) ? yellow : "black" });
+        margin_labels.style("font-weight", function(d){ return d.crew==race_data.loser ? "bold" : "normal"});
+        labels.attr("font-weight", function(d){ return (d.crew == race_data.winner || d.crew  == race_data.loser) ? "bold" : "normal" });
 
         if (race_data.winner){
           var winner = results.crews.filter(function(c){ return c.crew == race_data.winner })[0];
